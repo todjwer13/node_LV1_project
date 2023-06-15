@@ -17,6 +17,10 @@ const postSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  createdAt: {
+    type: Date,
+    defalt: Date.now(),
+  },
 })
 
 // postSchema.set("timestamps",true); // 미국 시간

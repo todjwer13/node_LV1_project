@@ -7,7 +7,7 @@ const Post = require("../schemas/post.js")
 // 댓글 조회
 router.get("/posts/:postId/comments", async (req, res) => {
   const { postId } = req.params;
-  const comments = await Comment.find({postId});
+  const comments = await Comment.find({postId}).sort({ createdAt: -1 });
   res.json({ comments });
 });
 
@@ -16,11 +16,14 @@ router.post("/posts/:postId/comments", async (req, res) => {
   const postId = req.params.postId;
   const { user, password,  content } = req.body;
 
+  const date = new Date()
+  const createdAt = date.valueOf();
+
   if(!content) {
     return res.status(400).json({Message: "댓글을 입력해주세요."})
   }
 
-  const createdComments = await Comment.create({ postId, user, password, content });
+  const createdComments = await Comment.create({ postId, user, password, content, createdAt });
 
   res.json({ createdComments, Message: "댓글을 작성하였습니다." });
 });
